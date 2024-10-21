@@ -1,4 +1,4 @@
- ; --- Mapeamento de Hardware (8051) ---
+; --- Mapeamento de Hardware (8051) ---
     RS      equ     P1.3    ;Reg Select ligado em P1.3
     EN      equ     P1.2    ;Enable ligado em P1.2
 
@@ -6,9 +6,9 @@
     LJMP START
 
 START:
-	MOV 20h, #00h
-  	MOV 21h, #00h
-  	MOV 22h, #00h
+	MOV 20h, #0Bh
+  	MOV 21h, #0Ah
+  	MOV 22h, #09h
   	MOV 23h, #00h
   	MOV 24h, #00h
   	MOV R5, #00H
@@ -17,10 +17,13 @@ START:
 	MOV 52h, #00h
 	MOV 53h, #00h
 	MOV 54h, #00h
+	MOV 60h, #00h
 
 MAIN:
 	CLR P2.7
-	MOV A, R5
+	MOV A, 54H
+	CJNE A, #00h , COMPARAR
+	MOV A, 24H
 	CJNE A, #00h , conferirSenha
 	ACALL leituraTeclado
 	JNB F0, MAIN
@@ -36,10 +39,39 @@ conferirSenha:
 	ACALL leituraTeclado
 	JNB F0, conferirSenha
 	ACALL MOVER_50
-	MOV A, R5
 	CLR F0
 	SJMP conferirSenha
 	RET
+
+COMPARAR:
+	MOV A, 20h
+	CJNE A, 50h, erro
+	lcall delay
+	MOV A, 21h
+	CJNE A, 51h, erro
+	lcall delay
+	MOV A, 22h
+	CJNE A, 52h, erro
+	lcall delay
+	MOV A, 23h
+	CJNE A, 53h, erro
+	lcall delay
+	acall acerto
+	ret
+
+acerto:
+	mov 60h, #01h
+	ret
+
+
+erro:
+	MOV 54h, #00H
+ 	MOV 53h, #00H
+ 	MOV 52h, #00H
+ 	MOV 51h, #00H
+ 	MOV 50h, #00H
+	LJMP MAIN
+
 
 ChamarMAIN:
 	LJMP MAIN
@@ -69,14 +101,15 @@ MOVER_23:
 	MOV A, 23H
 	CJNE A, #00H, MOVER_24
 	MOV 23h, R0
-	MOV R5, #01H
 	ACALL delay
 	RET
 
 MOVER_24:
 	MOV 24h, R0
 	ACALL delay
+	ACALL delay
 	RET
+
 
 CADASTRO:
 	clr P1.5
@@ -153,12 +186,16 @@ MOVER_53:
 	RET
 
 MOVER_54:
+	clr A
 	MOV 54h, R0
 	ACALL delay
-	RET	
+	LCALL MAIN	
+
 
 	
+
 delay:
 	MOV R7, #50
 	DJNZ R7, $
 	RET
+
