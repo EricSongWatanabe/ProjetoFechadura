@@ -6,9 +6,9 @@
     LJMP START
 
 START:
-	MOV 20h, #0Bh
-  	MOV 21h, #0Ah
-  	MOV 22h, #09h
+	MOV 20h, #00h
+  	MOV 21h, #00h
+  	MOV 22h, #00h
   	MOV 23h, #00h
   	MOV 24h, #00h
   	MOV R5, #00H
@@ -43,6 +43,14 @@ conferirSenha:
 	SJMP conferirSenha
 	RET
 
+CADASTRO:
+	clr P1.7
+	lcall delay
+	lcall delay
+	lcall delay
+	setb p1.7
+	RET
+
 COMPARAR:
 	MOV A, 20h
 	CJNE A, 50h, erro
@@ -60,17 +68,32 @@ COMPARAR:
 	ret
 
 acerto:
+	CLR P1.5
 	mov 60h, #01h
-	ret
-
-
-erro:
 	MOV 54h, #00H
  	MOV 53h, #00H
  	MOV 52h, #00H
  	MOV 51h, #00H
  	MOV 50h, #00H
-	LJMP MAIN
+	lcall delay
+	lcall delay
+	lcall delay
+	SETB P1.5
+	ret
+
+
+erro:
+	CLR P1.6
+	MOV 54h, #00H
+ 	MOV 53h, #00H
+ 	MOV 52h, #00H
+ 	MOV 51h, #00H
+ 	MOV 50h, #00H
+	lcall delay
+	lcall delay
+	lcall delay
+	SETB P1.6
+	ret
 
 
 ChamarMAIN:
@@ -111,9 +134,7 @@ MOVER_24:
 	RET
 
 
-CADASTRO:
-	clr P1.5
-	RET
+
 
 leituraTeclado:
   	MOV R0, #0       ; Reseta R0
@@ -198,4 +219,3 @@ delay:
 	MOV R7, #50
 	DJNZ R7, $
 	RET
-
