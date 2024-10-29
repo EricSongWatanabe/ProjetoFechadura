@@ -45,9 +45,9 @@ conferirSenha:
 
 CADASTRO:
 	clr P1.7
-	lcall delay
-	lcall delay
-	lcall delay
+	lcall delay_maior
+	lcall delay_maior
+	lcall delay_maior
 	setb p1.7
 	RET
 
@@ -75,9 +75,9 @@ acerto:
  	MOV 52h, #00H
  	MOV 51h, #00H
  	MOV 50h, #00H
-	lcall delay
-	lcall delay
-	lcall delay
+	lcall delay_maior
+	lcall delay_maior
+	lcall delay_maior
 	SETB P1.5
 	ret
 
@@ -89,9 +89,9 @@ erro:
  	MOV 52h, #00H
  	MOV 51h, #00H
  	MOV 50h, #00H
-	lcall delay
-	lcall delay
-	lcall delay
+	lcall delay_maior
+	lcall delay_maior
+	lcall delay_maior
 	SETB P1.6
 	ret
 
@@ -212,8 +212,18 @@ MOVER_54:
 	ACALL delay
 	LCALL MAIN	
 
+delay_maior:
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	ACALL delay
+	RET
 
-	
 
 delay:
 	MOV R7, #50
