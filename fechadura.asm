@@ -48,6 +48,36 @@ CADASTRO: ;funcao para acender o LED amarelo quando a senha foi cadastrada
 	lcall delay_maior
 	lcall delay_maior
 	setb p1.7
+	lcall lcd_init ;inicia o lcd e a seguir mostra a mensagem de senha cadastrada no lcd
+	mov a, #00h
+	acall posicionaCursor
+	mov a, #'C'
+	acall sendCharacter
+	mov a, #'A'
+	acall sendCharacter
+	mov a, #'D'
+	acall sendCharacter
+	mov a, #'A'
+	acall sendCharacter
+	mov a, #'S'
+	acall sendCharacter
+	mov a, #'T'
+	acall sendCharacter
+	mov a, #'R'
+	acall sendCharacter
+	mov a, #'A'
+	acall sendCharacter
+	mov a, #'D'
+	acall sendCharacter
+	mov a, #'O'
+	acall sendCharacter
+	lcall delay
+	lcall clearDisplay
+	SETB P1.7
+	SETB P1.6
+	SETB P1.5
+	SETB P1.3
+	SETB P1.2
 	RET
 
 COMPARAR: ;funcao que compara o valor em 20h com 50h, em seguida 21h com 51h, 22h com 52h, em diante... 
@@ -79,6 +109,30 @@ acerto: ;funcao para quando o usuario acerta a senha cadastrada. Acende um LED v
 	lcall delay_maior
 	lcall delay_maior
 	SETB P1.5
+	lcall lcd_init ;inicia o lcd e a seguir mostra a mensagem de acerto no lcd
+	mov a, #00h
+	acall posicionaCursor
+	mov a, #'C'
+	acall sendCharacter
+	mov a, #'O'
+	acall sendCharacter
+	mov a, #'R'
+	acall sendCharacter
+	mov a, #'R'
+	acall sendCharacter
+	mov a, #'E'
+	acall sendCharacter
+	mov a, #'T'
+	acall sendCharacter
+	mov a, #'O'
+	acall sendCharacter
+	lcall delay
+	lcall clearDisplay
+	SETB P1.7
+	SETB P1.6
+	SETB P1.5
+	SETB P1.3
+	SETB P1.2
 	ret
 
 
@@ -94,6 +148,34 @@ erro: ;funcao para quando o usuario erra a senha cadastrada. Acende um LED verme
 	lcall delay_maior
 	lcall delay_maior
 	SETB P1.6
+	lcall lcd_init ;inicia o lcd e a seguir mostra a mensagem de erro no lcd
+	mov a, #00h
+	acall posicionaCursor
+	mov a, #'I'
+	acall sendCharacter
+	mov a, #'N'
+	acall sendCharacter
+	mov a, #'C'
+	acall sendCharacter
+	mov a, #'O'
+	acall sendCharacter
+	mov a, #'R'
+	acall sendCharacter
+	mov a, #'R'
+	acall sendCharacter
+	mov a, #'E'
+	acall sendCharacter
+	mov a, #'T'
+	acall sendCharacter
+	mov a, #'O'
+	acall sendCharacter
+	lcall delay
+	lcall clearDisplay
+	SETB P1.7
+	SETB P1.6
+	SETB P1.5
+	SETB P1.3
+	SETB P1.2
 	ret
 
 
@@ -224,6 +306,184 @@ delay_maior: ;funcao de delay prolongado
 	ACALL delay
 	ACALL delay
 	ACALL delay
+	RET
+
+
+lcd_init:
+
+	CLR RS		; clear RS - indicates that instructions are being sent to the module
+
+; function set	
+	CLR P1.7		; |
+	CLR P1.6		; |
+	SETB P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear	
+					; function set sent for first time - tells module to go into 4-bit mode
+; Why is function set high nibble sent twice? See 4-bit operation on pages 39 and 42 of HD44780.pdf.
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+					; same function set high nibble sent a second time
+
+	SETB P1.7		; low nibble set (only P1.7 needed to be changed)
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+				; function set low nibble sent
+	CALL delay		; wait for BF to clear
+
+
+; entry mode set
+; set to increment with no shift
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	SETB P1.6		; |
+	SETB P1.5		; |low nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear
+
+
+; display on/off control
+; the display is turned on, the cursor is turned on and blinking is turned on
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	SETB P1.7		; |
+	SETB P1.6		; |
+	SETB P1.5		; |
+	SETB P1.4		; | low nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear
+	RET
+
+
+sendCharacter:
+	SETB RS  		; setb RS - indicates that data is being sent to module
+	MOV C, ACC.7		; |
+	MOV P1.7, C			; |
+	MOV C, ACC.6		; |
+	MOV P1.6, C			; |
+	MOV C, ACC.5		; |
+	MOV P1.5, C			; |
+	MOV C, ACC.4		; |
+	MOV P1.4, C			; | high nibble set
+
+	SETB EN			; |
+	CLR EN			; | negative edge on E
+
+	MOV C, ACC.3		; |
+	MOV P1.7, C			; |
+	MOV C, ACC.2		; |
+	MOV P1.6, C			; |
+	MOV C, ACC.1		; |
+	MOV P1.5, C			; |
+	MOV C, ACC.0		; |
+	MOV P1.4, C			; | low nibble set
+
+	SETB EN			; |
+	CLR EN			; | negative edge on E
+
+	CALL delay			; wait for BF to clear
+	CALL delay			; wait for BF to clear
+	RET
+
+
+
+posicionaCursor:
+	CLR RS	
+	SETB P1.7		    ; |
+	MOV C, ACC.6		; |
+	MOV P1.6, C			; |
+	MOV C, ACC.5		; |
+	MOV P1.5, C			; |
+	MOV C, ACC.4		; |
+	MOV P1.4, C			; | high nibble set
+
+	SETB EN			; |
+	CLR EN			; | negative edge on E
+
+	MOV C, ACC.3		; |
+	MOV P1.7, C			; |
+	MOV C, ACC.2		; |
+	MOV P1.6, C			; |
+	MOV C, ACC.1		; |
+	MOV P1.5, C			; |
+	MOV C, ACC.0		; |
+	MOV P1.4, C			; | low nibble set
+
+	SETB EN			; |
+	CLR EN			; | negative edge on E
+
+	CALL delay			; wait for BF to clear
+	CALL delay			; wait for BF to clear
+	RET
+
+
+;Retorna o cursor para primeira posição sem limpar o display
+retornaCursor:
+	CLR RS	
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CLR P1.7		; |
+	CLR P1.6		; |
+	SETB P1.5		; |
+	SETB P1.4		; | low nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear
+	RET
+
+
+;Limpa o display
+clearDisplay:
+	CLR RS	
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	SETB P1.4		; | low nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear
 	RET
 
 
