@@ -42,22 +42,22 @@ Para a realização do projeto, foi decidido dividir o código em 4 partes:
 
 ## Fotos do Funcionamento
 
-# Mensagem no LCD confirmando o cadastro
+### Mensagem no LCD confirmando o cadastro
 ![mensagem_cadastrado](https://github.com/user-attachments/assets/6b54c163-8af0-4c2c-8903-c2c4befa56ae)
 
-# LED amarelo confirmando o cadastro
+### LED amarelo confirmando o cadastro
 ![led_cadastrado](https://github.com/user-attachments/assets/3e3c0d51-b3a0-47c7-a22b-a69f1a730881)
 
-# Mensagem no LCD confirmando o acerto da senha
+### Mensagem no LCD confirmando o acerto da senha
 ![mensagem_correto](https://github.com/user-attachments/assets/da9aadad-4a68-4812-8184-52afd69826c4)
 
-# LED verde confirmando o cadastro
+### LED verde confirmando o cadastro
 ![led_correto](https://github.com/user-attachments/assets/615535f2-fccc-4ddd-8182-94370bf8c593)
 
-# Mensagem no LCD confirmando o erro da senha
+### Mensagem no LCD confirmando o erro da senha
 ![mensagem_incorreto](https://github.com/user-attachments/assets/09bf4c51-51fc-40d4-ac14-cb467004584c)
 
-# LED vermelho confirmando o erro da senha
+### LED vermelho confirmando o erro da senha
 ![led_vermelho](https://github.com/user-attachments/assets/c7fc90f4-2ba3-4110-9210-ba4160d6b48a)
 
 
