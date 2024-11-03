@@ -35,5 +35,14 @@ Para a realização do projeto, foi decidido dividir o código em 4 partes:
 
 **4.** Por último, a quarta parte foi destinada a exibição de leds que juntamente com o LCD, ajudam o usúario a entender melhor qual das partes o programa está executando.
 
+## Fluxograma
+
+![c5dd0a68-2a2f-49cf-8852-6555717ab047](https://github.com/user-attachments/assets/ca58e863-620a-481f-a85f-b502567c7f4a)
+
+
+## Fotos do Funcionamento
+
+
+
 ## Conclusão
   No geral, a experiência de realizar o projeto e arquitetar este circuito, foi muito enriquecedora e de muito aprendizado, as dificuldades encontradas ao longo do caminho fizeram o desenvolvimento ser trabalhoso, mas, ao mesmo tempo, foram a partir desses erros que foi possível garantir um programa sem a existência de erros. Sendo essas dificuldades, a aplicação do LDC, que nos fez ter que alterar diversas lógicas que haviam sido implementadas anteriormente por causa de conflitos na execução, um outro empecilho enfrentado foi no armazenamento na memória dos dados lidos através do keypad, uma vez que os números lidos pelo programa, nem sempre eram fidedignos ao número digitado. Portanto, mesmo havendo diversos entraves e dificuldades para a construção do programa, foi possível encontrar a solução e adquirir o aprendizado necessário com apoio dos materiais disponibilizados pelo professor.
